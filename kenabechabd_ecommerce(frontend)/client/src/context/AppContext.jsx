@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyProducts } from "../assets/assets";
 import { toast } from "react-hot-toast";
-import { itemId } from "../components/ProductCard";
+
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext();
@@ -16,20 +16,22 @@ export const AppContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItem] = useState([]);
 
-  //Add producvts toc
+  //Add products toc
   const addToCart = (itemId) => {
     let cartData = structuredClone(cartItems);
     if (cartData[itemId]) {
-      cartData.itemId += 1;
+      cartData[itemId]+= 1;
+      
     } else {
       cartData[itemId] = 1;
-    }
+      console.log('else');
+    }console.log(cartData.itemId);
     setCartItem(cartData);
     toast.success("Item added to cart");
   };
 
   //update products in cart
-  const updateCartItem = (item, quantity) => {
+  const updateCartItem = (itemId, quantity) => {
     let cartData = structuredClone(cartItems);
     if (cartData[itemId]) {
       cartData[itemId] += quantity;

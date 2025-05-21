@@ -23,14 +23,24 @@ const BestSeller = () => {
   return (
     <div className="mt-16">
       <p className="text-2xl md:text-3xl font-medium">Best Sellers</p>
-
-      {dummyProducts.map((dp, index) => (
-        <div key={index}>
-          <ProductCard Name={dp.name} Category={dp.category} Rating={dp.rating}
-          Image={dp.image[0]} Price={dp.price} OfferPrice={dp.offerPrice}
-          />
-        </div>
-      ))}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+       gap-3 md:gap-6 lg:grid-cols-5 mt-6">
+        {dummyProducts
+          .filter((product) => product.inStock)
+          .slice(0, 5)
+          .map((dp, index) => (
+              <ProductCard
+                key={index}
+                Name={dp.name}
+                Category={dp.category}
+                Rating={dp.rating}
+                Image={dp.image[0]}
+                Price={dp.price}
+                OfferPrice={dp.offerPrice}
+                ID={dp._id}
+              />
+          ))}
+      </div>
     </div>
   );
 };
