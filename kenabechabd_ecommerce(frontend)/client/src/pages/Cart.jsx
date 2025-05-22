@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets, dummyAddress } from "../assets/assets";
@@ -15,6 +16,7 @@ const Cart = () => {
   } = useAppContext();
 
   const [cartArray, setCartArray] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [addresses, setAddresses] = useState(dummyAddress);
   const [showAddress, setShowAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(dummyAddress[0]);
@@ -102,9 +104,7 @@ const Cart = () => {
                         updateCartItem(product._id, parseInt(e.target.value))
                       }
                     >
-                      {Array(
-                        Math.max(cartItems[product._id], 9)
-                      )
+                      {Array(Math.max(cartItems[product._id], 9))
                         .fill("")
                         .map((_, i) => (
                           <option key={i} value={i + 1}>
