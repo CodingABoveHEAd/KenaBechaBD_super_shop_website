@@ -13,7 +13,7 @@ const ProductCard = ({
   ID,
 }) => {
   // const [count, setCount] = useState(0);
-  const { currency, addToCart, removeCartItem, cartItems} =
+  const { currency, addToCart, removeCartItem, cartItems, navigate } =
     useAppContext();
 
   const product = {
@@ -25,10 +25,17 @@ const ProductCard = ({
     image: Image,
     id: ID,
   };
-  //work from here next day
+
+  const handleRedirect=()=>{
+    navigate(`/ProductDetails/${product.category.toLowerCase()}/${product.id}`);
+    scrollTo(0, 0);
+  }
 
   return (
-    <div className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-30 max-w-56 w-full">
+    <div
+      onClick={handleRedirect}
+      className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-30 max-w-56 w-full"
+    >
       <div className="group cursor-pointer flex items-center justify-center px-2">
         <img
           className="group-hover:scale-105 transition max-w-26 md:max-w-36"
@@ -78,14 +85,14 @@ const ProductCard = ({
             ) : (
               <div className="flex items-center justify-center gap-2 md:w-20 w-16 h-[34px] bg-primary/25 rounded select-none">
                 <button
-                  onClick={()=>removeCartItem(product.id)}
+                  onClick={() => removeCartItem(product.id)}
                   className="cursor-pointer text-md px-2 h-full"
                 >
                   -
                 </button>
                 <span className="w-5 text-center">{cartItems[product.id]}</span>
                 <button
-                   onClick={()=>addToCart(product.id)}
+                  onClick={() => addToCart(product.id)}
                   className="cursor-pointer text-md px-2 h-full"
                 >
                   +

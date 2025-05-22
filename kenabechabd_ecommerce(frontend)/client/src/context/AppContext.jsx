@@ -14,7 +14,9 @@ export const AppContextProvider = ({ children }) => {
   const [seller, setSeller] = useState(false);
   const [loggedin, setLoggedin] = useState(false);
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItem] = useState([]);
+  const [cartItems, setCartItem] = useState({});
+  const [searchQuery, setSearchQuery] = useState({});
+
 
   //Add products toc
   const addToCart = (itemId) => {
@@ -24,8 +26,8 @@ export const AppContextProvider = ({ children }) => {
       
     } else {
       cartData[itemId] = 1;
-      console.log('else');
-    }console.log(cartData.itemId);
+      // console.log('else');
+    }
     setCartItem(cartData);
     toast.success("Item added to cart");
   };
@@ -51,6 +53,24 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  //cart item count
+    const getCartCount=()=>{
+    let total=0;
+    for(const item in cartItems){
+        total+=cartItems[item];
+    }
+    return total;
+  }
+
+  const getCartAmount=()=>{
+    let total=0;
+    for(const item in cartItems){
+        const product=products.find((product)=>product._id===item);
+        total+=product.price*cartItems[item];
+    }
+    return Math.floor(total*100)/100;
+  }
+
   useEffect(() => {
     const fetchProducts = async () => {
       setProducts(dummyProducts);
@@ -72,6 +92,10 @@ export const AppContextProvider = ({ children }) => {
     addToCart,
     updateCartItem,
     removeCartItem,
+    searchQuery,
+    setSearchQuery,
+    getCartAmount,
+    getCartCount,
   };
   return <AppContext.Provider value={payload}>{children}</AppContext.Provider>;
 };
