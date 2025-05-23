@@ -12,12 +12,17 @@ import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import AddAddress from "./pages/AddAddress";
 import MyOrder from "./pages/MyOrder";
+import SellerLogin from "./components/seller/sellerLogin";
+import SellerLayout from "./pages/seller/SellerLayout";
+import AddProduct from "./pages/seller/AddProduct";
+import ProductList from "./pages/seller/ProductList";
+import Orders from "./pages/seller/Order";
 
 const App = () => {
   const isSellerPath = useLocation().pathname.includes("/seller");
-  const { loggedin } = useAppContext();
+  const { loggedin, seller } = useAppContext();
   return (
-    <div>
+    <div className="text-default min-h-screen text-gray-700 bg-white">
       {!isSellerPath && <Navbar />}
       {loggedin && <Login />}
       <Toaster />
@@ -26,12 +31,26 @@ const App = () => {
       >
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/products" element={<AllProducts/>}></Route>
-          <Route path="/products/:category" element={<ProductsCategory/>}></Route>
-          <Route path="/productdetails/:category/:id" element={<ProductDetails/>}></Route>
+          <Route path="/products" element={<AllProducts />}></Route>
+          <Route
+            path="/products/:category"
+            element={<ProductsCategory />}
+          ></Route>
+          <Route
+            path="/productdetails/:category/:id"
+            element={<ProductDetails />}
+          ></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/add-address" element={<AddAddress />}></Route>
           <Route path="/my-orders" element={<MyOrder />}></Route>
+          <Route
+            path="/seller"
+            element={seller ? <SellerLayout /> : <SellerLogin />}
+          >
+            <Route index element={seller ? <AddProduct /> : null} />
+            <Route path="product-list" element={<ProductList />}></Route>
+            <Route path="orders" element={<Orders />}></Route>
+          </Route>
         </Routes>
       </div>
       {!isSellerPath && <Footer />}
