@@ -2,7 +2,10 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyProducts } from "../assets/assets";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
+(axios.defaults.withCredentials = true),
+  (axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext();
@@ -17,13 +20,25 @@ export const AppContextProvider = ({ children }) => {
   const [cartItems, setCartItem] = useState({});
   const [searchQuery, setSearchQuery] = useState({});
 
+  const fetchSeller = async () => {
+    try {
+      const { data } = await axios.get("/api/seller/is-auth");
+      if (data.success) {
+        setSeller(true);
+      } else {
+        setSeller(false);
+      }
+    } catch (e) {
+      console.log(e);
+      setSeller(false);
+    }
+  };
 
   //Add products toc
   const addToCart = (itemId) => {
     let cartData = structuredClone(cartItems);
     if (cartData[itemId]) {
-      cartData[itemId]+= 1;
-      
+      cartData[itemId] += 1;
     } else {
       cartData[itemId] = 1;
       // console.log('else');
@@ -54,27 +69,29 @@ export const AppContextProvider = ({ children }) => {
   };
 
   //cart item count
-    const getCartCount=()=>{
-    let total=0;
-    for(const item in cartItems){
-        total+=cartItems[item];
+  const getCartCount = () => {
+    let total = 0;
+    for (const item in cartItems) {
+      total += cartItems[item];
     }
     return total;
-  }
+  };
 
-  const getCartAmount=()=>{
-    let total=0;
-    for(const item in cartItems){
-        const product=products.find((product)=>product._id===item);
-        total+=product.price*cartItems[item];
+  const getCartAmount = () => {
+    let total = 0;
+    for (const item in cartItems) {
+      const product = products.find((product) => product._id === item);
+      total += product.price * cartItems[item];
     }
-    return Math.floor(total*100)/100;
-  }
+    return Math.floor(total * 100) / 100;
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
       setProducts(dummyProducts);
     };
+    
+    fetchSeller();
     fetchProducts();
   }, []);
 
@@ -96,6 +113,7 @@ export const AppContextProvider = ({ children }) => {
     setSearchQuery,
     getCartAmount,
     getCartCount,
+    axios,
   };
   return <AppContext.Provider value={payload}>{children}</AppContext.Provider>;
 };

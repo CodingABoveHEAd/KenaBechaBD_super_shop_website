@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { assets, categories } from "../../assets/assets";
-import Categories from "../../components/Categories";
+import toast from "react-hot-toast";
+import { useAppContext } from "../../context/AppContext";
 
 const AddProduct = () => {
   const [files, setFiles] = useState([]);
@@ -11,8 +12,40 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
 
-  const handleFileChange = (e) => {
-    e.preventDefault();
+  const { axios } = useAppContext();
+
+  const handleFileChange = async(e) => {
+    try {
+      e.preventDefault();
+      const productData = {
+        name,
+        description: description.split("\n"),
+        category,
+        price,
+        offerPrice,
+      };
+      const formData = new FormData();
+      formData.append("productData", JSON.stringify(productData));
+      for (let i = 0; i < files.length; i++) {
+        formData.append("images", files[i]);
+      }
+      // console.log(files);
+      const { data } =await axios.post("/api/product/add", formData);
+      console.log(data);
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      setName("");
+      setCategory("");
+      setPrice("");
+      setOfferPrice("");
+      setFiles([]); //make empty all the form-fields
+    }
   };
 
   return (

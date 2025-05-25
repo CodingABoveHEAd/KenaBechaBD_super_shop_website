@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const SellerLogin = () => {
-  const { seller, setSeller, navigate } = useAppContext();
+  const { seller, setSeller, navigate, axios } = useAppContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSeller(true);
-    // const response = await fetch("http://localhost:5000/api/seller/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ email, password }),
-    // });
-    // const data = await response.json();
-    // if (data.success) {
-    //   setSeller(data.seller);
-    //   localStorage.setItem("seller", JSON.stringify(data.seller));
-    //   navigate("/seller");
-    // } else {
-    //   alert(data.message);
-    // }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const { data } = await axios.post("/api/seller/login", { email, password });
+
+    if (data.success) {
+      setSeller(true);
+      navigate("/seller");
+    } else {
+      toast.error(data.message || "Login failed");
+    }
+  } catch (error) {
+    toast.error(error.message || "Something went wrong");
+  }
+};
+
 
   useEffect(() => {
     if (seller) {
@@ -49,8 +47,9 @@ const SellerLogin = () => {
           </p>
           <div className="w-full">
             <p>Email</p>
-            <input onChange={(e)=> setEmail(e.target.value)}
-            value={email}
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
               type="email"
               placeholder="enter your email"
               className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary"
@@ -59,16 +58,22 @@ const SellerLogin = () => {
           </div>
           <div className="w-full">
             <p>Password</p>
-            <input onChange={(e)=> setPassword(e.target.value)}
-            value={password}
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
               type="password"
               placeholder="enter your password"
               className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary"
               required
             />
           </div>
-          <button type="submit" className="bg-primary text-white w-full py-2 rounded-md
-          cursor-pointer">Login</button>
+          <button
+            type="submit"
+            className="bg-primary text-white w-full py-2 rounded-md
+          cursor-pointer"
+          >
+            Login
+          </button>
         </div>
       </form>
     )

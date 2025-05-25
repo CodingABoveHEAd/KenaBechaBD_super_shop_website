@@ -1,19 +1,34 @@
-import React from "react";
 import { useAppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 import { Outlet, Link, NavLink } from "react-router-dom"; // ✅ Corrected import
+import toast from "react-hot-toast";
 
 const SellerLayout = () => {
-  const { setSeller } = useAppContext();
+  const { setSeller, axios } = useAppContext();
 
   const sidebarLinks = [
     { name: "Add Product", path: "/seller", icon: assets.add_icon },
-    { name: "Product List", path: "/seller/Product-list", icon: assets.product_list_icon },
+    {
+      name: "Product List",
+      path: "/seller/Product-list",
+      icon: assets.product_list_icon,
+    },
     { name: "Orders", path: "/seller/orders", icon: assets.order_icon },
   ];
 
   const logout = async () => {
-    setSeller(false);
+    try {
+      const { data } = await axios.get("/api/seller/logout");
+      if (data.success) {
+        toast.success(data.message);
+        setSeller(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -40,8 +55,10 @@ const SellerLayout = () => {
 
       {/* Sidebar + Main Content */}
       <div className="flex">
-        <div className="md:w-64 w-16 border-r h-[550px] text-base border-gray-300 
-        pt-4 flex flex-col transition-all duration-300 bg-white">
+        <div
+          className="md:w-64 w-16 border-r h-[95vh] text-base border-gray-300 
+        pt-4 flex flex-col  bg-white"
+        >
           {sidebarLinks.map((item, index) => (
             <NavLink
               to={item.path}
@@ -56,7 +73,8 @@ const SellerLayout = () => {
                 }`
               }
             >
-              <img src={item.icon} alt="icon" className="w-7 h-7" /> {/* ✅ Fixed typo: icno -> icon */}
+              <img src={item.icon} alt="icon" className="w-7 h-7" />{" "}
+              {/* ✅ Fixed typo: icno -> icon */}
               <p className="md:block hidden">{item.name}</p>
             </NavLink>
           ))}
