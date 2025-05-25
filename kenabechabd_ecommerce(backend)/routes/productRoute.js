@@ -10,7 +10,7 @@ import {
 
 const productRouter = express.Router();
 
-productRouter.post("/", upload.array(['images']), authSeller, addProduct);
+productRouter.post("/add", upload.array('images'), authSeller, addProduct);
 //auth used because only authenticated usres can add product
 //upload.array() is a multer function
 

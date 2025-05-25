@@ -37,6 +37,7 @@ export const isSellerAuth = async (req, res) => {
   try {
     return res.status(200).json({success: true});
   } catch (error) {
+    console.log(1);
     return res.status(400).json({ success: false, message: error.message });
   }
 };
@@ -51,6 +52,6 @@ export const sellerlogout = async (req, res) => {
     });
     return res.json({ success: true, message: "Logged Out" });
   } catch (error) {
-    return res.status(400).json({ success: false, message: error.message });
+    return res.status(405).json({ success: false, message: error.message });
   }
 };

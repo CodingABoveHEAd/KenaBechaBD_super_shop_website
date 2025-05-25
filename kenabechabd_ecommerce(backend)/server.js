@@ -18,7 +18,7 @@ const app = express();
 await connectdb();
 await connectCloudinary();
 
-const allowedOrigins = ["http://localhost:9000"];
+const allowedOrigins = ["http://localhost:5173"];
 
 //middleware configuration
 app.use(json());
