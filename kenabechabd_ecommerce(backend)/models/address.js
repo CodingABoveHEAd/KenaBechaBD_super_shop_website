@@ -7,7 +7,7 @@ const addressSchema=new mongoose.Schema({
     },
     firstName:{
         type:String,
-        re,quired:true
+        required:true
     },
     lastName:{
         type:String,
@@ -30,7 +30,7 @@ const addressSchema=new mongoose.Schema({
         required:true
     },
     zipcode:{
-        type:number,
+        type:Number,
         required:true
     },
     country:{

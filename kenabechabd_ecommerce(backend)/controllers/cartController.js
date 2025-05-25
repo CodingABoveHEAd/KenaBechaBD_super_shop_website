@@ -1,4 +1,4 @@
-import user from "../models/user";
+import user from "../models/user.js";
 
 //update User CartData : /api/cart/update
 export const updateCart = async (req, res) => {
