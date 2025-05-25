@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { dummyProducts } from "../assets/assets";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
@@ -20,6 +19,20 @@ export const AppContextProvider = ({ children }) => {
   const [cartItems, setCartItem] = useState({});
   const [searchQuery, setSearchQuery] = useState({});
 
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get("/api/product/list");
+      if (data.success) {
+        setProducts(data.products);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
+  };
+
   const fetchSeller = async () => {
     try {
       const { data } = await axios.get("/api/seller/is-auth");
@@ -31,6 +44,29 @@ export const AppContextProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
       setSeller(false);
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get("/api/user/is-auth");
+
+      if (data?.success) {
+        setUser(data.user);
+        setCartItem(data.user.cartItems || {}); // Prevent undefined
+      } else {
+        toast.error(data.message || "Failed to fetch user");
+      }
+    } catch (error) {
+      setUser(null);
+
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message); // Backend error message
+      } else {
+        toast.error("Something went wrong while fetching user");
+      }
+
+      console.error("FetchUser error:", error.message);
     }
   };
 
@@ -87,12 +123,9 @@ export const AppContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setProducts(dummyProducts);
-    };
-    
     fetchSeller();
     fetchProducts();
+    fetchUser();
   }, []);
 
   const payload = {
@@ -114,6 +147,7 @@ export const AppContextProvider = ({ children }) => {
     getCartAmount,
     getCartCount,
     axios,
+    fetchProducts,
   };
   return <AppContext.Provider value={payload}>{children}</AppContext.Provider>;
 };

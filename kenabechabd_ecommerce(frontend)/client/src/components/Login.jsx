@@ -1,27 +1,45 @@
 import React from "react";
-import {  useAppContext } from "../context/AppContext";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [state, setState] = React.useState("login");
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const{setUser,setLoggedin}=useAppContext();
+  const { setUser, setLoggedin, axios,navigate } = useAppContext();
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    setUser({
-      email:"test@kenabechabd.com",
-      name:"KenaBechabd"
-    });
+ const onSubmitHandler = async (e) => {
+  e.preventDefault();
+  try {
+    const user = { name, email, password };
+    const { data } = await axios.post(`/api/user/${state}`, user);
+    toast.success(data.message);
+    setUser(data.user);
     setLoggedin(false);
+    navigate('/');
+  } catch (error) {
+    if (error.response && error.response.data) {
+      toast.error(error.response.data.message);
+      setEmail("");
+    } else {
+      toast.error("Something went wrong. Please try again.");
+    }
   }
+};
+
 
   return (
-    <div onClick={()=>setLoggedin(false)} className="fixed top-0 bottom-0 left-0 right-0 flex items-center
-    text-sm text-gray-600 bg-black/5 0 backdrop-blur-sm z-50">
-
-      <form onSubmit={onSubmitHandler} onClick={(e)=>e.stopPropagation()} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white">
+    <div
+      onClick={() => setLoggedin(false)}
+      className="fixed top-0 bottom-0 left-0 right-0 flex items-center
+    text-sm text-gray-600 bg-black/5 0 backdrop-blur-sm z-50"
+    >
+      <form
+        onSubmit={onSubmitHandler}
+        onClick={(e) => e.stopPropagation()}
+        className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white"
+      >
         <p className="text-2xl font-medium m-auto">
           <span className="text-primary">User</span>{" "}
           {state === "login" ? "Login" : "Sign Up"}

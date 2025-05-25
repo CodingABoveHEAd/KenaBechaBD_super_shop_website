@@ -1,6 +1,7 @@
 import React from "react";
 import ProductCard from "./ProductCard";
 import { dummyProducts } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
 
 //   {
 //     _id: "gd46g23h",
@@ -20,12 +21,14 @@ import { dummyProducts } from "../assets/assets";
 //   },
 
 const BestSeller = () => {
+  const {products}=useAppContext();
+  console.log(products);
   return (
     <div className="mt-16">
       <p className="text-2xl md:text-3xl font-medium">Best Sellers</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4
        gap-3 md:gap-6 lg:grid-cols-5 mt-6">
-        {dummyProducts
+        {products
           .filter((product) => product.inStock)
           .slice(0, 5)
           .map((dp, index) => (
@@ -33,7 +36,7 @@ const BestSeller = () => {
                 key={index}
                 Name={dp.name}
                 Category={dp.category}
-                Rating={dp.rating}
+                Rating={4}
                 Image={dp.image[0]}
                 Price={dp.price}
                 OfferPrice={dp.offerPrice}

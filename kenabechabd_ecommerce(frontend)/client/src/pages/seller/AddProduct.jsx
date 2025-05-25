@@ -12,7 +12,7 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
 
-  const { axios } = useAppContext();
+  const { axios,navigate } = useAppContext();
 
   const handleFileChange = async(e) => {
     try {
@@ -31,9 +31,10 @@ const AddProduct = () => {
       }
       // console.log(files);
       const { data } =await axios.post("/api/product/add", formData);
-      console.log(data);
+      
       if (data.success) {
         toast.success(data.message);
+        navigate('/seller/Product-list');
       } else {
         toast.error(data.message);
       }
@@ -165,7 +166,7 @@ const AddProduct = () => {
             />
           </div>
         </div>
-        <button className="px-8 py-2.5 bg-primary text-white font-medium rounded">
+        <button className="cursor-pointer px-8 py-2.5 bg-primary hover:bg-primary-dull text-white font-medium rounded">
           ADD
         </button>
       </form>
