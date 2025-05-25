@@ -27,7 +27,7 @@ export const addProduct = async (req, res) => {
   }
 };
 
-//add product : /api/product/list
+//get all product : /api/product/list
 export const productList = async (req, res) => {
   try {
     const products = await Product.find({});
@@ -54,7 +54,7 @@ export const productById = async (req, res) => {
 export const changeStock = async (req, res) => {
   try {
     const { id, inStock } = req.body;
-    await findByIdAndUpdate(id, { inStock });
+    await Product.findByIdAndUpdate(id, { inStock });
     res.json({ success: true, message: "stock updated" });
   } catch (error) {
     console.log(error.message);

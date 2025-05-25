@@ -117,8 +117,8 @@ export const login = async (req, res) => {
 //check Auth:/api/user/is-Auth  (for getting user from the database)
 export const isAuth = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const user = await User.findById(userId).select("-password");
+    // const { userId } = req.body;
+    const user = await User.findById(req.userId).select("-password");
     return res.json({ success: true, user });
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
