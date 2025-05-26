@@ -20,6 +20,7 @@ await connectCloudinary();
 
 const allowedOrigins = [
   "https://kenabechabd-supershop-website-htcr.onrender.com",
+  "http://localhost:5173" 
 ];
 
 //middleware configuration
