@@ -12,42 +12,43 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
 
-  const { axios,navigate } = useAppContext();
+  const { axios, navigate } = useAppContext();
 
-  const handleFileChange = async(e) => {
-    try {
-      e.preventDefault();
-      const productData = {
-        name,
-        description: description.split("\n"),
-        category,
-        price,
-        offerPrice,
-      };
-      const formData = new FormData();
-      formData.append("productData", JSON.stringify(productData));
-      for (let i = 0; i < files.length; i++) {
-        formData.append("images", files[i]);
-      }
-      // console.log(files);
-      const { data } =await axios.post("/api/product/add", formData);
-      
-      if (data.success) {
-        toast.success(data.message);
-        navigate('/seller/Product-list');
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+ const handleFileChange = async (e) => {
+  e.preventDefault();
+  try {
+    const productData = {
+      name,
+      description: description.split("\n"),
+      category,
+      price,
+      offerPrice,
+    };
+    const formData = new FormData();
+    formData.append("productData", JSON.stringify(productData));
+    for (let i = 0; i < files.length; i++) {
+      formData.append("images", files[i]);
+    }
+
+    const { data } = await axios.post("/api/product/add", formData);
+    console.log("Response from /api/product/add:", data); // moved up
+
+    if (data.success) {
+      toast.success(data.message);
       setName("");
       setCategory("");
       setPrice("");
       setOfferPrice("");
-      setFiles([]); //make empty all the form-fields
+      setFiles([]);
+      navigate("/seller/product-list");
+    } else {
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    console.error("Error while adding product:", error);
+  }
+};
+
 
   return (
     <div className="py-10 flex flex-col justify-between bg-white">
