@@ -51,7 +51,7 @@ const frontendPath = path.join(
 app.use(express.static(frontendPath));
 
 // Catch-all: let React handle unknown routes (for deep linking)
-app.get("/:splat*", (req, res) => {
+app.get("/:splat(*)", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
