@@ -51,9 +51,11 @@ const frontendPath = path.join(
 app.use(express.static(frontendPath));
 
 // Catch-all: let React handle unknown routes (for deep linking)
-app.get("/:splat(*)", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
+// Serve React for all /seller routes (to support React Router on seller side)
+app.get('/seller/*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
+
 
 
 const PORT = process.env.PORT || 5000;
