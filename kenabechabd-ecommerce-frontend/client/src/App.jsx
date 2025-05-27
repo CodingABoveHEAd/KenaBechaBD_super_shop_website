@@ -42,7 +42,7 @@ const App = () => {
           ></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/add-address" element={<AddAddress />}></Route>
-          <Route path="/add-address" element={<AddAddress />}></Route>
+          <Route path="/my-orders"  element={<MyOrder />}></Route>
           <Route
             path="/seller"
             element={seller ? <SellerLayout /> : <SellerLogin />}

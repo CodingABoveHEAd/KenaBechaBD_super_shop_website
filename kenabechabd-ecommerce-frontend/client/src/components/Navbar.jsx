@@ -47,9 +47,15 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-6">
-        <NavLink to="/" className="hover:text-primary transition">Home</NavLink>
-        <NavLink to="/products" className="hover:text-primary transition">All Products</NavLink>
-        <NavLink to="/" className="hover:text-primary transition">Contact</NavLink>
+        <NavLink to="/" className="hover:text-primary transition">
+          Home
+        </NavLink>
+        <NavLink to="/products" className="hover:text-primary transition">
+          All Products
+        </NavLink>
+        <NavLink to="/" className="hover:text-primary transition">
+          Contact
+        </NavLink>
 
         <div className="hidden lg:flex items-center border border-gray-300 px-3 py-1 rounded-full text-sm">
           <input
@@ -138,9 +144,15 @@ const Navbar = () => {
       {/* Mobile Dropdown Menu */}
       {open && (
         <div className="z-50 absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex flex-col items-start gap-2 px-5 text-sm sm:hidden">
-          <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
-          <NavLink to="/products" onClick={() => setOpen(false)}>All Products</NavLink>
-          <NavLink to="/" onClick={() => setOpen(false)}>Contact</NavLink>
+          <NavLink to="/" onClick={() => setOpen(false)}>
+            Home
+          </NavLink>
+          <NavLink to="/products" onClick={() => setOpen(false)}>
+            All Products
+          </NavLink>
+          <NavLink to="/" onClick={() => setOpen(false)}>
+            Contact
+          </NavLink>
           {user && (
             <NavLink to="/my-orders" onClick={() => setOpen(false)}>
               My Orders
@@ -161,7 +173,7 @@ const Navbar = () => {
               <button
                 onClick={() => {
                   setOpen(false);
-                  navigate("/admin-login");
+                  navigate("/seller");
                 }}
                 className="w-full px-6 py-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-full"
               >

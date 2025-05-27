@@ -11,7 +11,6 @@ const Orders = () => {
     try {
       const { data } = await axios.get("/api/order/seller");
       if (data.success) {
-        console.log(data.orders);
         setOrders(data.orders);
       } else {
         toast.error(data.message || "Failed to fetch orders");
